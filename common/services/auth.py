@@ -91,17 +91,17 @@ class AuthService:
 
 
     def send_welcome_email(self, login_method: LoginMethod, person: Person, email: str):
-        if confirmation_link := self.prepare_password_reset_url(login_method, email):
+        if verify_link := self.prepare_password_reset_url(login_method, email):
             message = {
                 "event": "WELCOME_EMAIL",
                 "data": {
-                    "confirmation_link": confirmation_link,
+                    "verify_link": verify_link,
                     "recipient_name": f"{person.first_name} {person.last_name}".strip(),
                 },
                 "to_emails": [email],
             }
-            logger.info("confirmation_link")
-            logger.info(confirmation_link)
+            logger.info("email convermation link")
+            logger.info(verify_link)
             self.message_sender.send_message(self.EMAIL_TRANSMITTER_QUEUE_NAME, message)
 
     def login_user_by_email_password(self, email: str, password: str):
