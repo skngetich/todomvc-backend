@@ -68,8 +68,12 @@ class TaskList(Resource):
             entity_id=parsed_body["entity_id"], title=parsed_body["title"]
         )
         return get_success_response(person=person_obj)
-    
-    
+
+
+@task_api.route(
+    "/<string:entity_id>", doc=dict(description="Delete task by id")
+)
+class TaskItem(Resource):
     @login_required()
     def delete(self, entity_id):
         task_service = TaskService(config)
@@ -78,7 +82,6 @@ class TaskList(Resource):
         return get_success_response(
             message=f"task with id: { deleted_task_obj.entity_id} deleted"
         )
-
 
 
 @task_api.route(
@@ -91,5 +94,3 @@ class ToggleTask(Resource):
 
         task_service.toggle_task(entity_id)
         return get_success_response(message="task status changed")
-
-
