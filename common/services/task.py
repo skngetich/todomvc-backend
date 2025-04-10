@@ -10,7 +10,7 @@ class TaskService:
         self.config = config
 
         self.repository_factory = RepositoryFactory(config)
-        self.task_repo = self.repository_factory.get_repository(RepoType.task)
+        self.task_repo = self.repository_factory.get_repository(RepoType.TASK)
 
         self.person_service = PersonService(config)
 
