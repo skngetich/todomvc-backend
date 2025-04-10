@@ -32,7 +32,6 @@ class PersonService:
         return person
     def update_person_name_by_id(self, entitiy_id: str, first_name:str, last_name:str)-> Person:
         person_obj: Person = self.get_person_by_id(entity_id=entitiy_id)
-        logger.info(person_obj)
         if not person_obj:
             raise APIException("User does not exist") 
         

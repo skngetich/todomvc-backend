@@ -2,7 +2,7 @@ from flask_restx import Namespace, Resource
 from flask import request
 from app.helpers.response import get_success_response, parse_request_body, validate_required_fields
 from app.helpers.decorators import login_required
-from common.app_config import config
+from common.app_config import config 
 from common.services import AuthService, PersonService
 
 
