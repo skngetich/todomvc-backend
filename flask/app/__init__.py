@@ -18,7 +18,7 @@ from logger import set_request_exception_signal, logger
 api = Api(
     version=get_service_version(),
     title=get_project_name(),
-    description="Welcome to the API documentation of Rococo Sample API",
+    description="Welcome to the API documentation of TodoMVC app",
     authorizations={'Bearer': {'type': 'apiKey', 'in': 'header', 'name': 'Authorization'}},
     security='Bearer',
     doc='/api-doc'

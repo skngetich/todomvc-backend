@@ -2,11 +2,10 @@ revision = "0000000006"
 down_revision = "0000000005"
 
 
-
 def upgrade(migration):
     # write migration here
     migration.create_table(
-        "person_organization_role",
+        "task",
         """
             "entity_id" varchar(32) NOT NULL,
             "version" varchar(32) NOT NULL,
@@ -15,18 +14,17 @@ def upgrade(migration):
             "changed_by_id" varchar(32) DEFAULT NULL,
             "changed_on" timestamp NULL DEFAULT CURRENT_TIMESTAMP,
             "person_id" varchar(32) NOT NULL,
-            "organization_id" varchar(32) NOT NULL,
-            "role" varchar(32) DEFAULT NULL,
+            "title" varchar(254) DEFAULT NULL,           
+            "is_completed" boolean DEFAULT false,
+            "is_default" boolean DEFAULT NULL,
             PRIMARY KEY ("entity_id")
-        """
+        """,
     )
-    migration.add_index("person_organization_role", "person_organization_role_person_id_ind", "person_id")
-    migration.add_index("person_organization_role", "person_organization_role_organization_id_ind", "organization_id")
-    migration.add_index("person_organization_role", "person_organization_role_person_id_organization_id_ind", "person_id, organization_id")
+    migration.add_index("task", "task_person_id_ind", "person_id")
 
-    # Create the "person_organization_role_audit" table
+    # Create the "task_audit" table
     migration.create_table(
-        "person_organization_role_audit",
+        "task_audit",
         """
             "entity_id" varchar(32) NOT NULL,
             "version" varchar(32) NOT NULL,
@@ -35,10 +33,11 @@ def upgrade(migration):
             "changed_by_id" varchar(32) DEFAULT NULL,
             "changed_on" timestamp NULL DEFAULT CURRENT_TIMESTAMP,
             "person_id" varchar(32) NOT NULL,
-            "organization_id" varchar(32) NOT NULL,
-            "role" varchar(32) DEFAULT NULL,
+            "title" varchar(254) DEFAULT NULL,
+            "is_completed" boolean DEFAULT NULL,
+            "is_default" boolean DEFAULT NULL,
             PRIMARY KEY ("entity_id", "version")
-        """
+        """,
     )
 
     migration.update_version_table(version=revision)
@@ -46,7 +45,7 @@ def upgrade(migration):
 
 def downgrade(migration):
     # write migration here
-    migration.drop_table(table_name="person_organization_role")
-    migration.drop_table(table_name="person_organization_role_audit")
+    migration.drop_table(table_name="task")
+    migration.drop_table(table_name="task_audit")
 
     migration.update_version_table(version=down_revision)

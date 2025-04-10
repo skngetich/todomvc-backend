@@ -1,5 +1,7 @@
 from common.repositories.factory import RepositoryFactory, RepoType
 from common.models.person import Person
+from common.app_logger import logger
+from app.helpers.exceptions import InputValidationError, APIException
 
 
 class PersonService:
@@ -28,3 +30,13 @@ class PersonService:
     def get_person_by_id(self, entity_id: str):
         person = self.person_repo.get_one({"entity_id": entity_id})
         return person
+    def update_person_name_by_id(self, entitiy_id: str, first_name:str, last_name:str)-> Person:
+        person_obj: Person = self.get_person_by_id(entity_id=entitiy_id)
+        if not person_obj:
+            raise APIException("User does not exist") 
+        
+        person_obj.first_name = first_name
+        person_obj.last_name = last_name
+
+        return self.person_repo.save(person_obj)
+        
